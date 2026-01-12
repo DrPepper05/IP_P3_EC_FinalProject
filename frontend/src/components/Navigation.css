@@ -1,0 +1,240 @@
+/* Minimalist Navigation Bar */
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+
+.navbar-minimal {
+  background: rgba(255, 255, 255, 0.98);
+  backdrop-filter: blur(20px);
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.05);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.nav-container-minimal {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 72px;
+}
+
+/* Logo */
+.nav-logo-minimal {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  font-size: 20px;
+  font-weight: 700;
+  color: #111;
+  transition: transform 0.2s ease;
+}
+
+.nav-logo-minimal:hover {
+  transform: scale(1.05);
+}
+
+.logo-text-primary {
+  font-size: 22px;
+  font-weight: 800;
+  color: #FFD100;
+  text-transform: uppercase;
+  letter-spacing: -0.5px;
+}
+
+.logo-text-secondary {
+  font-size: 22px;
+  font-weight: 300;
+  color: #1a1a1a;
+  margin-left: 8px;
+}
+
+/* Menu Links */
+.nav-menu-minimal {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+  justify-content: center;
+}
+
+.nav-link-minimal {
+  position: relative;
+  color: #6b7280;
+  text-decoration: none;
+  font-size: 15px;
+  font-weight: 500;
+  padding: 8px 20px;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.nav-link-minimal:hover {
+  color: #111;
+  background: #f9fafb;
+}
+
+.nav-link-minimal.active {
+  color: #1a1a1a;
+  background: #FFF8E1;
+  font-weight: 600;
+}
+
+/* Action Buttons */
+.nav-actions-minimal {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.user-greeting {
+  color: #6b7280;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.btn-minimal {
+  text-decoration: none;
+  padding: 10px 24px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+}
+
+.btn-secondary {
+  color: #6b7280;
+  background: transparent;
+}
+
+.btn-secondary:hover {
+  color: #111;
+}
+
+.btn-primary {
+  background: #FFD100;
+  color: #1a1a1a;
+  box-shadow: 0 4px 12px rgba(255, 209, 0, 0.3);
+  font-weight: 600;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  background: #FFC107;
+  box-shadow: 0 8px 20px rgba(255, 209, 0, 0.4);
+}
+
+.btn-logout-minimal {
+  background: #f9fafb;
+  color: #6b7280;
+}
+
+.btn-logout-minimal:hover {
+  background: #f3f4f6;
+  color: #111;
+}
+
+/* Mobile Responsive */
+@media (max-width: 1024px) {
+  .nav-container-minimal {
+    padding: 0 20px;
+  }
+}
+
+@media (max-width: 768px) {
+  .navbar-minimal {
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+  }
+
+  .nav-container-minimal {
+    height: 64px;
+  }
+
+  .nav-logo-minimal {
+    font-size: 18px;
+  }
+
+  .logo-icon {
+    font-size: 20px;
+  }
+
+  .nav-menu-minimal {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: white;
+    border-top: 1px solid #e5e7eb;
+    padding: 12px 20px;
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.08);
+    justify-content: space-around;
+    gap: 0;
+  }
+
+  .nav-link-minimal {
+    font-size: 13px;
+    padding: 8px 12px;
+    text-align: center;
+    flex: 1;
+  }
+
+  .nav-link-minimal.active::after {
+    display: none;
+  }
+
+  .nav-actions-minimal {
+    gap: 8px;
+  }
+
+  .user-greeting {
+    display: none;
+  }
+
+  .btn-minimal {
+    padding: 8px 16px;
+    font-size: 13px;
+  }
+
+  .btn-primary {
+    box-shadow: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .nav-container-minimal {
+    padding: 0 16px;
+  }
+
+  .logo-text {
+    display: none;
+  }
+
+  .btn-secondary {
+    display: none;
+  }
+}
+
+/* Animation */
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.navbar-minimal {
+  animation: slideDown 0.3s ease;
+}

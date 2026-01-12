@@ -1,0 +1,181 @@
+.locker-browser {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 20px;
+}
+
+.browser-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.browser-header h1 {
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.subtitle {
+  color: #666;
+  font-size: 16px;
+}
+
+.live-indicator {
+  color: #FFD100;
+  font-weight: bold;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.filter-bar {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-bottom: 30px;
+  flex-wrap: wrap;
+}
+
+.filter-btn {
+  padding: 10px 20px;
+  border: 2px solid #ddd;
+  background: white;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.3s;
+}
+
+.filter-btn:hover {
+  border-color: #FFD100;
+}
+
+.filter-btn.active {
+  background: #FFD100;
+  color: #1a202c;
+  font-weight: 600;
+  border-color: #FFD100;
+  box-shadow: 0 2px 8px rgba(255, 209, 0, 0.3);
+}
+
+.locker-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.locker-card {
+  background: white;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.locker-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.locker-card.occupied {
+  opacity: 0.7;
+}
+
+.locker-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.locker-header h3 {
+  margin: 0;
+  color: #333;
+}
+
+.status-badge {
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.status-badge.available {
+  background: #e8f5e9;
+  color: #2e7d32;
+}
+
+.status-badge.occupied {
+  background: #ffebee;
+  color: #c62828;
+}
+
+.locker-details {
+  margin-bottom: 20px;
+}
+
+.detail-item {
+  padding: 8px 0;
+  color: #555;
+  font-size: 14px;
+}
+
+.detail-item strong {
+  color: #333;
+}
+
+.btn-book {
+  width: 100%;
+  padding: 12px;
+  background: #FFD100;
+  color: #1a202c;
+  border: none;
+  border-radius: 6px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 12px rgba(255, 209, 0, 0.3);
+}
+
+.btn-book:hover {
+  background: #FFC000;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(255, 209, 0, 0.4);
+}
+
+.occupied-message {
+  text-align: center;
+  padding: 12px;
+  background: #f5f5f5;
+  border-radius: 6px;
+  color: #666;
+  font-size: 14px;
+}
+
+.no-lockers {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 60px 20px;
+  color: #999;
+  font-size: 18px;
+}
+
+.loading {
+  text-align: center;
+  padding: 60px 20px;
+  font-size: 18px;
+  color: #666;
+}
+
+.error-message {
+  background: #ffebee;
+  color: #c62828;
+  padding: 15px;
+  border-radius: 6px;
+  margin-bottom: 20px;
+  text-align: center;
+}

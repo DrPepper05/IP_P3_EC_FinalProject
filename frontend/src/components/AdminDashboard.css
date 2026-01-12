@@ -1,0 +1,422 @@
+/* Admin Dashboard - Functional Styling */
+
+.admin-dashboard {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.admin-header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.admin-header h1 {
+  color: #333;
+  font-size: 32px;
+  margin: 0;
+}
+
+/* Messages */
+.message {
+  padding: 12px 20px;
+  margin-bottom: 20px;
+  border-radius: 6px;
+  font-weight: 500;
+}
+
+.message-error {
+  background-color: #ffebee;
+  color: #c62828;
+  border: 1px solid #ef5350;
+}
+
+.message-success {
+  background-color: #e8f5e9;
+  color: #2e7d32;
+  border: 1px solid #66bb6a;
+}
+
+/* Tab Navigation */
+.tab-navigation {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 30px;
+  border-bottom: 2px solid #e0e0e0;
+}
+
+.tab {
+  padding: 12px 24px;
+  background: none;
+  border: none;
+  border-bottom: 3px solid transparent;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 600;
+  color: #666;
+  transition: all 0.3s;
+}
+
+.tab:hover {
+  color: #333;
+  background-color: #f5f5f5;
+}
+
+.tab.active {
+  color: #1a202c;
+  border-bottom-color: #FFD100;
+  background-color: #FFF8E1;
+}
+
+/* Tab Content */
+.tab-content {
+  margin-top: 20px;
+}
+
+.admin-section h2 {
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.admin-section h3 {
+  color: #555;
+  margin-bottom: 15px;
+  font-size: 18px;
+}
+
+/* Create Form */
+.create-form {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 30px;
+  border: 1px solid #e0e0e0;
+}
+
+.form-row {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+  flex-wrap: wrap;
+}
+
+.form-row input,
+.form-row select {
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+  flex: 1;
+  min-width: 150px;
+}
+
+.form-row input:focus,
+.form-row select:focus {
+  outline: none;
+  border-color: #FFD100;
+}
+
+/* Filter Bar */
+.filter-bar {
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.filter-bar label {
+  font-weight: 600;
+  color: #555;
+}
+
+.filter-bar select {
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+/* Data Table */
+.data-table {
+  background: white;
+  border-radius: 8px;
+  overflow-x: auto;
+  border: 1px solid #e0e0e0;
+}
+
+.data-table table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.data-table thead {
+  background-color: #f5f5f5;
+}
+
+.data-table th {
+  padding: 12px;
+  text-align: left;
+  font-weight: 600;
+  color: #333;
+  border-bottom: 2px solid #e0e0e0;
+  font-size: 14px;
+}
+
+.data-table td {
+  padding: 12px;
+  border-bottom: 1px solid #f0f0f0;
+  font-size: 14px;
+  color: #555;
+}
+
+.data-table tbody tr:hover {
+  background-color: #fafafa;
+}
+
+.data-table tbody tr.editing-row {
+  background-color: #FFF8E1;
+}
+
+.data-table tbody tr.editing-row input,
+.data-table tbody tr.editing-row select {
+  width: 100%;
+  padding: 6px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.no-data {
+  text-align: center;
+  padding: 40px;
+  color: #999;
+  font-size: 16px;
+}
+
+/* Status Badges */
+.status-badge {
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  display: inline-block;
+}
+
+.status-available {
+  background-color: #e8f5e9;
+  color: #2e7d32;
+}
+
+.status-occupied {
+  background-color: #ffebee;
+  color: #c62828;
+}
+
+.status-active {
+  background-color: #e3f2fd;
+  color: #1976d2;
+}
+
+.status-completed {
+  background-color: #f5f5f5;
+  color: #666;
+}
+
+.status-cancelled {
+  background-color: #ffebee;
+  color: #c62828;
+}
+
+.role-admin {
+  background-color: #e1bee7;
+  color: #6a1b9a;
+}
+
+.role-customer {
+  background-color: #e3f2fd;
+  color: #1976d2;
+}
+
+/* Buttons */
+button {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  transition: all 0.2s;
+  margin-right: 5px;
+}
+
+.btn-create {
+  background-color: #FFD100;
+  color: #1a202c;
+  padding: 10px 20px;
+}
+
+.btn-create:hover {
+  background-color: #FFC000;
+}
+
+.btn-create:disabled {
+  background-color: #e0e0e0;
+  color: #999;
+  cursor: not-allowed;
+}
+
+.btn-edit {
+  background-color: #2196F3;
+  color: white;
+}
+
+.btn-edit:hover {
+  background-color: #1976D2;
+}
+
+.btn-save {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.btn-save:hover {
+  background-color: #45a049;
+}
+
+.btn-cancel {
+  background-color: #9E9E9E;
+  color: white;
+}
+
+.btn-cancel:hover {
+  background-color: #757575;
+}
+
+.btn-delete {
+  background-color: #f44336;
+  color: white;
+}
+
+.btn-delete:hover {
+  background-color: #d32f2f;
+}
+
+.btn-toggle {
+  background-color: #FF9800;
+  color: white;
+}
+
+.btn-toggle:hover {
+  background-color: #F57C00;
+}
+
+.btn-complete {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.btn-complete:hover {
+  background-color: #45a049;
+}
+
+/* Loading State */
+.loading {
+  text-align: center;
+  padding: 40px;
+  font-size: 18px;
+  color: #666;
+}
+
+/* Edit Location Section */
+.edit-location-section {
+  margin-top: 30px;
+  padding: 20px;
+  background: #FFF8E1;
+  border: 2px solid #FFD100;
+  border-radius: 8px;
+}
+
+.edit-location-section h3 {
+  color: #1a202c;
+  margin-top: 0;
+  margin-bottom: 20px;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .form-row {
+    flex-direction: column;
+  }
+
+  .form-row input,
+  .form-row select {
+    width: 100%;
+  }
+
+  .data-table {
+    font-size: 12px;
+  }
+
+  .data-table th,
+  .data-table td {
+    padding: 8px;
+  }
+
+  button {
+    padding: 6px 12px;
+    font-size: 12px;
+    margin-bottom: 5px;
+  }
+
+  .tab {
+    padding: 10px 16px;
+    font-size: 14px;
+  }
+}
+
+/* Location Dropdown Styles */
+.location-select {
+  width: 100%;
+  padding: 10px 15px;
+  border: 2px solid #FFD100;
+  border-radius: 6px;
+  background-color: white;
+  font-size: 14px;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.location-select:hover {
+  border-color: #e6be00;
+  box-shadow: 0 0 0 3px rgba(255, 209, 0, 0.1);
+}
+
+.location-select:focus {
+  outline: none;
+  border-color: #e6be00;
+  box-shadow: 0 0 0 3px rgba(255, 209, 0, 0.2);
+}
+
+.location-select option {
+  padding: 5px;
+}
+
+.location-select-small {
+  padding: 6px 10px;
+  border: 2px solid #FFD100;
+  border-radius: 4px;
+  background-color: white;
+  font-size: 12px;
+  font-family: inherit;
+  cursor: pointer;
+  min-width: 150px;
+}
+
+.location-select-small:focus {
+  outline: none;
+  border-color: #e6be00;
+  box-shadow: 0 0 0 2px rgba(255, 209, 0, 0.2);
+}

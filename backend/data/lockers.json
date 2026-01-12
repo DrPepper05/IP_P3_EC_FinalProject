@@ -1,0 +1,15 @@
+[ {
+  "id" : 1,
+  "lockerNumber" : "Gar-0001",
+  "size" : "MEDIUM",
+  "status" : "AVAILABLE",
+  "hourlyRate" : 19.0,
+  "locationName" : "Timișoara Nord Station",
+  "address" : "Strada Gării 2, Timișoara 300159",
+  "latitude" : 45.7494,
+  "longitude" : 21.2089,
+  "floor" : "Ground Floor",
+  "section" : "Section A",
+  "version" : 6,
+  "available" : true,
+  "hibernateLazyInitializer"

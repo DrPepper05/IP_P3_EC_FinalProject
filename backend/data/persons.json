@@ -1,0 +1,154 @@
+[ {
+  "id" : 1,
+  "email" : "admin@luggagestorage.com",
+  "firstName" : "John",
+  "lastName" : "Administrator",
+  "role" : "ADMIN",
+  "customer" : false,
+  "admin" : true,
+  "fullName" : "John Administrator"
+}, {
+  "id" : 2,
+  "email" : "admin2@luggagestorage.com",
+  "firstName" : "Jane",
+  "lastName" : "Manager",
+  "role" : "ADMIN",
+  "customer" : false,
+  "admin" : true,
+  "fullName" : "Jane Manager"
+}, {
+  "id" : 4,
+  "email" : "bob.johnson@example.com",
+  "firstName" : "Bob",
+  "lastName" : "Johnson",
+  "role" : "CUSTOMER",
+  "customer" : true,
+  "admin" : false,
+  "fullName" : "Bob Johnson"
+}, {
+  "id" : 5,
+  "email" : "charlie.brown@example.com",
+  "firstName" : "Charlie",
+  "lastName" : "Brown",
+  "role" : "CUSTOMER",
+  "customer" : true,
+  "admin" : false,
+  "fullName" : "Charlie Brown"
+}, {
+  "id" : 6,
+  "email" : "diana.davis@example.com",
+  "firstName" : "Diana",
+  "lastName" : "Davis",
+  "role" : "CUSTOMER",
+  "customer" : true,
+  "admin" : false,
+  "fullName" : "Diana Davis"
+}, {
+  "id" : 7,
+  "email" : "eve.wilson@example.com",
+  "firstName" : "Eve",
+  "lastName" : "Wilson",
+  "role" : "CUSTOMER",
+  "customer" : true,
+  "admin" : false,
+  "fullName" : "Eve Wilson"
+}, {
+  "id" : 8,
+  "email" : "frank.moore@example.com",
+  "firstName" : "Frank",
+  "lastName" : "Moore",
+  "role" : "CUSTOMER",
+  "customer" : true,
+  "admin" : false,
+  "fullName" : "Frank Moore"
+}, {
+  "id" : 9,
+  "email" : "grace.taylor@example.com",
+  "firstName" : "Grace",
+  "lastName" : "Taylor",
+  "role" : "CUSTOMER",
+  "customer" : true,
+  "admin" : false,
+  "fullName" : "Grace Taylor"
+}, {
+  "id" : 10,
+  "email" : "henry.anderson@example.com",
+  "firstName" : "Henry",
+  "lastName" : "Anderson",
+  "role" : "CUSTOMER",
+  "customer" : true,
+  "admin" : false,
+  "fullName" : "Henry Anderson"
+}, {
+  "id" : 11,
+  "email" : "iris.thomas@example.com",
+  "firstName" : "Iris",
+  "lastName" : "Thomas",
+  "role" : "CUSTOMER",
+  "customer" : true,
+  "admin" : false,
+  "fullName" : "Iris Thomas"
+}, {
+  "id" : 13,
+  "email" : "karen.white@example.com",
+  "firstName" : "Karen",
+  "lastName" : "White",
+  "role" : "CUSTOMER",
+  "customer" : true,
+  "admin" : false,
+  "fullName" : "Karen White"
+}, {
+  "id" : 14,
+  "email" : "liam.harris@example.com",
+  "firstName" : "Liam",
+  "lastName" : "Harris",
+  "role" : "CUSTOMER",
+  "customer" : true,
+  "admin" : false,
+  "fullName" : "Liam Harris"
+}, {
+  "id" : 15,
+  "email" : "maria.martin@example.com",
+  "firstName" : "Maria",
+  "lastName" : "Martin",
+  "role" : "CUSTOMER",
+  "customer" : true,
+  "admin" : false,
+  "fullName" : "Maria Martin"
+}, {
+  "id" : 16,
+  "email" : "nathan.thompson@example.com",
+  "firstName" : "Nathan",
+  "lastName" : "Thompson",
+  "role" : "CUSTOMER",
+  "customer" : true,
+  "admin" : false,
+  "fullName" : "Nathan Thompson"
+}, {
+  "id" : 17,
+  "email" : "olivia.garcia@example.com",
+  "firstName" : "Olivia",
+  "lastName" : "Garcia",
+  "role" : "CUSTOMER",
+  "customer" : true,
+  "admin" : false,
+  "fullName" : "Olivia Garcia"
+}, {
+  "id" : 18,
+  "email" : "test@gmail.com",
+  "firstName" : "Lima",
+  "lastName" : "Boga",
+  "role" : "CUSTOMER",
+  "customer" : true,
+  "admin" : false,
+  "fullName" : "Lima Boga"
+}, {
+  "id" : 19,
+  "email" : "admin@gmail.com",
+  "firstName" : "Admin",
+  "lastName" : "Gmail",
+  "role" : "ADMIN",
+  "customer" : false,
+  "admin" : true,
+  "fullName" : "Admin Gmail"
+} ]

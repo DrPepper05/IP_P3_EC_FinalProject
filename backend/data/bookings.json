@@ -1,0 +1,11 @@
+[ {
+  "id" : 2,
+  "customer" : {
+    "id" : 7,
+    "email" : "eve.wilson@example.com",
+    "firstName" : "Eve",
+    "lastName" : "Wilson",
+    "role" : "CUSTOMER",
+    "customer" : true,
+    "admin" : false,
+    "hibernateLazyInitializer"
