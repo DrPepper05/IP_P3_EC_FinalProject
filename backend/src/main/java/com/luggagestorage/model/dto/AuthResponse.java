@@ -15,7 +15,6 @@ public class AuthResponse {
     private String lastName;
     private Role role;
 
-    // Constructors
     public AuthResponse() {
     }
 
@@ -28,7 +27,6 @@ public class AuthResponse {
         this.role = role;
     }
 
-    // Getters and Setters
     public String getToken() {
         return token;
     }

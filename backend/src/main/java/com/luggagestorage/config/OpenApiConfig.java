@@ -27,11 +27,9 @@ public class OpenApiConfig {
      */
     @Bean
     public OpenAPI customOpenAPI() {
-        // Define JWT security scheme
         final String securitySchemeName = "bearerAuth";
 
         return new OpenAPI()
-                // API Information
                 .info(new Info()
                         .title("Luggage Storage System API")
                         .version("1.0.0")
@@ -44,7 +42,6 @@ public class OpenApiConfig {
                                 .name("MIT License")
                                 .url("https://opensource.org/licenses/MIT")))
 
-                // Servers
                 .servers(Arrays.asList(
                         new Server()
                                 .url("http://localhost:8080")
@@ -53,7 +50,6 @@ public class OpenApiConfig {
                                 .url("http://localhost:8080")
                                 .description("Local Server")))
 
-                // Security Scheme (JWT Bearer Token)
                 .components(new Components()
                         .addSecuritySchemes(securitySchemeName,
                                 new SecurityScheme()
@@ -63,7 +59,6 @@ public class OpenApiConfig {
                                         .bearerFormat("JWT")
                                         .description("Enter JWT token obtained from /api/auth/login endpoint")))
 
-                // Global security requirement
                 .addSecurityItem(new SecurityRequirement().addList(securitySchemeName));
     }
 }

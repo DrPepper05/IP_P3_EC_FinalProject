@@ -83,7 +83,6 @@ public class Locker {
     @JsonIgnore
     private List<Booking> bookings = new ArrayList<>();
 
-    // Constructors
     public Locker() {
     }
 
@@ -109,7 +108,6 @@ public class Locker {
         this.section = section;
     }
 
-    // Getters and Setters
     public Long getId() {
         return id;
     }

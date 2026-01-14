@@ -36,19 +36,13 @@ public class CorsConfig {
             "http://127.0.0.1:3001"
         ));
 
-        // Allow all HTTP methods
         config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
-
-        // Allow all headers
         config.setAllowedHeaders(Arrays.asList("*"));
 
         // Expose authorization header to frontend
         config.setExposedHeaders(Arrays.asList("Authorization", "Content-Type"));
 
-        // Cache preflight response for 1 hour
         config.setMaxAge(3600L);
-
-        // Apply CORS configuration to all endpoints
         source.registerCorsConfiguration("/**", config);
 
         return new CorsFilter(source);

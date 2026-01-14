@@ -63,7 +63,6 @@ public class Booking {
     @Column(name = "version")
     private Long version = 0L;
 
-    // Constructors
     public Booking() {
     }
 
@@ -76,7 +75,6 @@ public class Booking {
         this.totalPrice = calculatePrice();
     }
 
-    // Getters and Setters
     public Long getId() {
         return id;
     }

@@ -29,13 +29,8 @@ public class LuggageStorageApplication {
     private static final Logger logger = LoggerFactory.getLogger(LuggageStorageApplication.class);
 
     public static void main(String[] args) {
-        // Print startup banner
         printBanner();
-
-        // Start Spring Boot application
         ConfigurableApplicationContext context = SpringApplication.run(LuggageStorageApplication.class, args);
-
-        // Log application startup information
         logApplicationStartup(context);
     }
 
@@ -93,20 +88,17 @@ public class LuggageStorageApplication {
                 contextPath,
                 env.getProperty("spring.datasource.url", "Not configured"));
 
-        // Log configuration options
         logger.info("\n=== Configuration Options ===");
         logger.info("File Storage Enabled: {}", env.getProperty("file.storage.enabled", "true"));
         logger.info("File Storage Path: {}", env.getProperty("file.storage.path", "./data"));
         logger.info("JWT Expiration: {} ms", env.getProperty("jwt.expiration", "86400000"));
 
-        // Log important endpoints
         logger.info("\n=== Important Endpoints ===");
         logger.info("Health Check: {}://localhost:{}/api/auth/health", protocol, serverPort);
         logger.info("Register: POST {}://localhost:{}/api/auth/register", protocol, serverPort);
         logger.info("Login: POST {}://localhost:{}/api/auth/login", protocol, serverPort);
         logger.info("View Lockers: GET {}://localhost:{}/api/lockers/available", protocol, serverPort);
 
-        // Log command-line argument options
         logger.info("\n=== Command-Line Argument Examples ===");
         logger.info("Change profile: --spring.profiles.active=prod");
         logger.info("Change port: --server.port=9090");

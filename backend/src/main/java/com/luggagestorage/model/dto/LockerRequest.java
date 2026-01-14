@@ -44,7 +44,6 @@ public class LockerRequest {
     @NotBlank(message = "Section is required")
     private String section;
 
-    // Constructors
     public LockerRequest() {
     }
 
@@ -70,7 +69,6 @@ public class LockerRequest {
         this.section = section;
     }
 
-    // Getters and Setters
     public String getLockerNumber() {
         return lockerNumber;
     }

@@ -28,11 +28,9 @@ public class BookingResponse {
     private Double totalPrice;
     private Long durationInHours;
 
-    // Constructors
     public BookingResponse() {
     }
 
-    // Getters and Setters
     public Long getId() {
         return id;
     }

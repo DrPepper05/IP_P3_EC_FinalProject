@@ -58,11 +58,9 @@ public class BookingScheduler {
         logger.info("Running scheduled task: Auto-complete expired bookings");
 
         try {
-            // Get current time
             LocalDateTime currentTime = LocalDateTime.now();
             logger.debug("Current time: {}", currentTime);
 
-            // Find all expired active bookings
             List<Booking> expiredBookings = bookingRepository.findExpiredActiveBookings(currentTime);
 
             if (expiredBookings.isEmpty()) {
@@ -72,7 +70,6 @@ public class BookingScheduler {
 
             logger.info("Found {} expired booking(s) to auto-complete", expiredBookings.size());
 
-            // Complete each expired booking
             int successCount = 0;
             int failureCount = 0;
 
@@ -95,7 +92,6 @@ public class BookingScheduler {
                 }
             }
 
-            // Log summary
             logger.info("Auto-complete task completed. Success: {}, Failures: {}, Total: {}",
                     successCount, failureCount, expiredBookings.size());
 

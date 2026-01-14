@@ -55,7 +55,6 @@ public class Person {
     @JsonIgnore
     private List<Booking> bookings = new ArrayList<>();
 
-    // Constructors
     public Person() {
     }
 
@@ -67,7 +66,6 @@ public class Person {
         this.role = role;
     }
 
-    // Getters and Setters
     public Long getId() {
         return id;
     }
@@ -146,7 +144,6 @@ public class Person {
         booking.setCustomer(null);
     }
 
-    // Utility methods
     public String getFullName() {
         return firstName + " " + lastName;
     }

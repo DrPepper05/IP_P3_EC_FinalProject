@@ -30,7 +30,6 @@ public class RegisterRequest {
     @NotNull(message = "Role is required")
     private Role role;
 
-    // Constructors
     public RegisterRequest() {
     }
 
@@ -42,7 +41,6 @@ public class RegisterRequest {
         this.role = role;
     }
 
-    // Getters and Setters
     public String getEmail() {
         return email;
     }

@@ -17,7 +17,6 @@ public class ErrorResponse {
     private String path;
     private List<String> details;
 
-    // Constructors
     public ErrorResponse() {
         this.timestamp = LocalDateTime.now();
         this.details = new ArrayList<>();
@@ -31,7 +30,6 @@ public class ErrorResponse {
         this.path = path;
     }
 
-    // Getters and Setters
     public LocalDateTime getTimestamp() {
         return timestamp;
     }

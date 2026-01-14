@@ -69,20 +69,14 @@ public class DataInitializer implements CommandLineRunner {
             return;
         }
 
-        // Check if data already exists
         if (lockerRepository.count() > 0 || personRepository.count() > 0) {
             return;
         }
 
         System.out.println("Initializing database with test data...");
 
-        // Initialize users
         List<Person> users = initializeUsers();
-
-        // Initialize lockers
         List<Locker> lockers = initializeLockers();
-
-        // Initialize bookings
         initializeBookings(users, lockers);
 
         System.out.println("Data initialization completed successfully!");
@@ -119,7 +113,6 @@ public class DataInitializer implements CommandLineRunner {
         users.add(admin1);
         users.add(admin2);
 
-        // Create 15 customer users
         for (int i = 0; i < 15; i++) {
             String firstName = firstNames[i];
             String lastName = lastNames[i];
@@ -149,7 +142,6 @@ public class DataInitializer implements CommandLineRunner {
     private List<Locker> initializeLockers() {
         List<Locker> lockers = new java.util.ArrayList<>();
 
-        // Define locations with coordinates in Timișoara
         LocationData[] locations = {
             new LocationData("Timișoara Nord", "Strada Gării, Timișoara 300162", 45.7489, 21.2087),
             new LocationData("Iulius Town Timișoara", "Strada Aristide Demetriade 1, Timișoara 300088", 45.7662, 21.2274),
@@ -202,33 +194,25 @@ public class DataInitializer implements CommandLineRunner {
     private void initializeBookings(List<Person> users, List<Locker> lockers) {
         List<Booking> bookings = new java.util.ArrayList<>();
 
-        // Filter to only customer users
         List<Person> customers = users.stream()
             .filter(Person::isCustomer)
             .toList();
 
-        // Create 40 bookings (between 30-50)
         int bookingCount = 40;
         LocalDateTime now = LocalDateTime.now();
 
         for (int i = 0; i < bookingCount; i++) {
-            // Pick a random customer
             Person customer = customers.get(random.nextInt(customers.size()));
-
-            // Pick a random locker that's either available or we override status
             Locker locker = lockers.get(random.nextInt(lockers.size()));
 
-            // Create booking with various time patterns
             LocalDateTime startDate = getRandomStartDate(now, i);
             int durationHours = getRandomDuration();
             LocalDateTime endDate = startDate.plusHours(durationHours);
 
-            // Ensure end date is in the future for ACTIVE bookings
             boolean shouldBeActive = random.nextBoolean() && endDate.isAfter(now);
 
             Booking booking = new Booking(customer, locker, startDate, endDate);
 
-            // Set random booking status
             if (shouldBeActive) {
                 booking.setStatus(BookingStatus.ACTIVE);
                 locker.setStatus(Status.OCCUPIED);

@@ -253,7 +253,6 @@ public class LockerController {
         stats.put("maintenance", allLockers.stream().filter(l -> l.getStatus() == Status.MAINTENANCE).count());
         stats.put("outOfOrder", allLockers.stream().filter(l -> l.getStatus() == Status.OUT_OF_ORDER).count());
 
-        // Calculate availability rate
         long available = (long) stats.get("available");
         double availabilityRate = allLockers.size() > 0 ?
                 (available * 100.0 / allLockers.size()) : 0.0;

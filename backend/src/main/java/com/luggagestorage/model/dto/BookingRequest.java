@@ -23,7 +23,6 @@ public class BookingRequest {
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm[:ss]")
     private LocalDateTime endDatetime;
 
-    // Constructors
     public BookingRequest() {
     }
 
@@ -33,7 +32,6 @@ public class BookingRequest {
         this.endDatetime = endDatetime;
     }
 
-    // Getters and Setters
     public Long getLockerId() {
         return lockerId;
     }

@@ -30,8 +30,6 @@ public class BookingEvent {
         this.timestamp = LocalDateTime.now();
     }
 
-    // Getters and Setters
-
     public Long getBookingId() {
         return bookingId;
     }

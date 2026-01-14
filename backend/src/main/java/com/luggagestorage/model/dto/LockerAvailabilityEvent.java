@@ -30,8 +30,6 @@ public class LockerAvailabilityEvent {
         this.timestamp = LocalDateTime.now();
     }
 
-    // Getters and Setters
-
     public Long getLockerId() {
         return lockerId;
     }
