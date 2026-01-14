@@ -1,9 +1,5 @@
 package com.luggagestorage.model.enums;
 
-/**
- * Enum representing booking status lifecycle.
- * Part of the minimum 2 interfaces/enums requirement.
- */
 public enum BookingStatus {
     ACTIVE("Active", "Booking is currently active"),
     COMPLETED("Completed", "Booking has been completed"),

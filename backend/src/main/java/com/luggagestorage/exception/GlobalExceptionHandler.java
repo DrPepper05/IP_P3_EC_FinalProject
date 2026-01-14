@@ -14,17 +14,9 @@ import org.springframework.web.context.request.WebRequest;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
-/**
- * Global exception handler for the application.
- * Handles both custom exceptions and language exceptions.
- * Part of the optional requirement: "Identify and handle at least 3 language exceptions" (1 point).
- */
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    /**
-     * Handle custom exception: ResourceNotFoundException
-     */
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<ErrorResponse> handleResourceNotFoundException(
             ResourceNotFoundException ex, WebRequest request) {
@@ -37,9 +29,6 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
     }
 
-    /**
-     * Handle custom exception: LockerNotAvailableException
-     */
     @ExceptionHandler(LockerNotAvailableException.class)
     public ResponseEntity<ErrorResponse> handleLockerNotAvailableException(
             LockerNotAvailableException ex, WebRequest request) {
@@ -55,9 +44,6 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(error, HttpStatus.CONFLICT);
     }
 
-    /**
-     * Handle custom exception: InvalidBookingTimeException
-     */
     @ExceptionHandler(InvalidBookingTimeException.class)
     public ResponseEntity<ErrorResponse> handleInvalidBookingTimeException(
             InvalidBookingTimeException ex, WebRequest request) {
@@ -74,10 +60,6 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
 
-    /**
-     * Handle language exception #1: FileNotFoundException
-     * Part of the optional requirement (1 point).
-     */
     @ExceptionHandler(FileNotFoundException.class)
     public ResponseEntity<ErrorResponse> handleFileNotFoundException(
             FileNotFoundException ex, WebRequest request) {
@@ -91,10 +73,6 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
     }
 
-    /**
-     * Handle language exception #2: IOException
-     * Part of the optional requirement (1 point).
-     */
     @ExceptionHandler(IOException.class)
     public ResponseEntity<ErrorResponse> handleIOException(
             IOException ex, WebRequest request) {
@@ -108,10 +86,6 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    /**
-     * Handle language exception #3: IllegalArgumentException
-     * Part of the optional requirement (1 point).
-     */
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<ErrorResponse> handleIllegalArgumentException(
             IllegalArgumentException ex, WebRequest request) {
@@ -125,9 +99,6 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
 
-    /**
-     * Handle language exception #4: NullPointerException (bonus)
-     */
     @ExceptionHandler(NullPointerException.class)
     public ResponseEntity<ErrorResponse> handleNullPointerException(
             NullPointerException ex, WebRequest request) {
@@ -141,9 +112,6 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    /**
-     * Handle validation errors from @Valid annotations
-     */
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ErrorResponse> handleValidationException(
             MethodArgumentNotValidException ex, WebRequest request) {
@@ -154,7 +122,6 @@ public class GlobalExceptionHandler {
                 request.getDescription(false).replace("uri=", "")
         );
 
-        // Add all validation errors to details
         for (FieldError fieldError : ex.getBindingResult().getFieldErrors()) {
             error.addDetail(fieldError.getField() + ": " + fieldError.getDefaultMessage());
         }
@@ -162,9 +129,6 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
 
-    /**
-     * Handle authentication exceptions
-     */
     @ExceptionHandler(BadCredentialsException.class)
     public ResponseEntity<ErrorResponse> handleBadCredentialsException(
             BadCredentialsException ex, WebRequest request) {
@@ -177,9 +141,6 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(error, HttpStatus.UNAUTHORIZED);
     }
 
-    /**
-     * Handle generic authentication exceptions
-     */
     @ExceptionHandler(AuthenticationException.class)
     public ResponseEntity<ErrorResponse> handleAuthenticationException(
             AuthenticationException ex, WebRequest request) {
@@ -192,9 +153,6 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(error, HttpStatus.UNAUTHORIZED);
     }
 
-    /**
-     * Handle all other exceptions
-     */
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleGlobalException(
             Exception ex, WebRequest request) {

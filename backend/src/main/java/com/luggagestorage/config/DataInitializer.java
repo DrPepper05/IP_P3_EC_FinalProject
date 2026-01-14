@@ -22,10 +22,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
-/**
- * DataInitializer class that populates the database with realistic test data on startup.
- * Implements CommandLineRunner to run initialization logic after application startup.
- */
 @Component
 public class DataInitializer implements CommandLineRunner {
 
@@ -46,9 +42,6 @@ public class DataInitializer implements CommandLineRunner {
 
     private final Random random = new Random();
 
-    /**
-     * Location data with coordinates and details
-     */
     private static class LocationData {
         String name;
         String address;
@@ -85,9 +78,6 @@ public class DataInitializer implements CommandLineRunner {
                            bookingRepository.count() + " bookings");
     }
 
-    /**
-     * Initialize 17 users (2 admins + 15 customers)
-     */
     private List<Person> initializeUsers() {
         Person admin1 = new Person(
             "admin@luggagestorage.com",
@@ -105,7 +95,6 @@ public class DataInitializer implements CommandLineRunner {
             Role.ADMIN
         );
 
-        // Customer names for diversity
         String[] firstNames = {"Alice", "Bob", "Charlie", "Diana", "Eve", "Frank", "Grace", "Henry", "Iris", "Jack", "Karen", "Liam", "Maria", "Nathan", "Olivia"};
         String[] lastNames = {"Smith", "Johnson", "Brown", "Davis", "Wilson", "Moore", "Taylor", "Anderson", "Thomas", "Jackson", "White", "Harris", "Martin", "Thompson", "Garcia"};
 
@@ -131,14 +120,6 @@ public class DataInitializer implements CommandLineRunner {
         return users;
     }
 
-    /**
-     * Initialize 130 lockers across 5 locations in Timișoara
-     * Timișoara Nord: 26 lockers
-     * Iulius Town: 26 lockers
-     * Shopping City: 26 lockers
-     * Timișoara Airport: 26 lockers
-     * Piața Victoriei: 26 lockers
-     */
     private List<Locker> initializeLockers() {
         List<Locker> lockers = new java.util.ArrayList<>();
 
@@ -151,7 +132,7 @@ public class DataInitializer implements CommandLineRunner {
         };
 
         int lockerCounter = 1;
-        int[] lockersPerLocation = {26, 26, 26, 26, 26}; // 130 total
+        int[] lockersPerLocation = {26, 26, 26, 26, 26};
 
         for (int locIdx = 0; locIdx < locations.length; locIdx++) {
             LocationData location = locations[locIdx];
@@ -188,9 +169,6 @@ public class DataInitializer implements CommandLineRunner {
         return lockers;
     }
 
-    /**
-     * Initialize 30-50 bookings with realistic patterns
-     */
     private void initializeBookings(List<Person> users, List<Locker> lockers) {
         List<Booking> bookings = new java.util.ArrayList<>();
 
@@ -229,10 +207,6 @@ public class DataInitializer implements CommandLineRunner {
         bookingRepository.saveAll(bookings);
     }
 
-    /**
-     * Get a random locker size with distribution:
-     * 40% SMALL, 35% MEDIUM, 25% LARGE
-     */
     private Size getRandomSize() {
         int rand = random.nextInt(100);
         if (rand < 40) return Size.SMALL;
@@ -240,9 +214,6 @@ public class DataInitializer implements CommandLineRunner {
         return Size.LARGE;
     }
 
-    /**
-     * Get hourly rate based on size
-     */
     private Double getHourlyRateBySize(Size size) {
         switch (size) {
             case SMALL:
@@ -256,10 +227,6 @@ public class DataInitializer implements CommandLineRunner {
         }
     }
 
-    /**
-     * Get a random locker status
-     * 60% AVAILABLE, 25% OCCUPIED, 10% RESERVED, 4% MAINTENANCE, 1% OUT_OF_ORDER
-     */
     private Status getRandomStatus() {
         int rand = random.nextInt(100);
         if (rand < 60) return Status.AVAILABLE;
@@ -269,12 +236,9 @@ public class DataInitializer implements CommandLineRunner {
         return Status.OUT_OF_ORDER;
     }
 
-    /**
-     * Get a random start date (past, present, or future)
-     */
     private LocalDateTime getRandomStartDate(LocalDateTime now, int bookingIndex) {
-        // Vary the dates: some past, some present, some future
-        int daysOffset = random.nextInt(60) - 20; // -20 to +40 days
+
+        int daysOffset = random.nextInt(60) - 20;
         int hours = random.nextInt(24);
         int minutes = random.nextInt(60);
 
@@ -285,9 +249,6 @@ public class DataInitializer implements CommandLineRunner {
                   .withNano(0);
     }
 
-    /**
-     * Get a random booking duration (1 to 72 hours)
-     */
     private int getRandomDuration() {
         int[] commonDurations = {1, 2, 3, 4, 6, 8, 12, 24, 48, 72};
         return commonDurations[random.nextInt(commonDurations.length)];

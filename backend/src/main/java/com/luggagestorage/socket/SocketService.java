@@ -18,11 +18,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Service providing data for socket communication.
- * This service integrates with existing services to provide system information via raw sockets.
- * Part of Requirement 4 (1p): Use sockets for client-server communication.
- */
 @Service
 public class SocketService {
 
@@ -43,11 +38,6 @@ public class SocketService {
         this.objectMapper = new ObjectMapper();
     }
 
-    /**
-     * Get system status information.
-     *
-     * @return JSON string with system status
-     */
     public String getSystemStatus() {
         try {
             Map<String, Object> status = new HashMap<>();
@@ -64,11 +54,6 @@ public class SocketService {
         }
     }
 
-    /**
-     * Get system statistics.
-     *
-     * @return JSON string with statistics
-     */
     public String getSystemStatistics() {
         try {
             List<Booking> allBookings = bookingService.getAllBookings();
@@ -93,11 +78,6 @@ public class SocketService {
         }
     }
 
-    /**
-     * Get available lockers information.
-     *
-     * @return JSON string with available lockers
-     */
     public String getAvailableLockers() {
         try {
             List<Locker> availableLockers = lockerService.getAvailableLockers();
@@ -123,11 +103,6 @@ public class SocketService {
         }
     }
 
-    /**
-     * Get active bookings information.
-     *
-     * @return JSON string with active bookings
-     */
     public String getActiveBookings() {
         try {
             List<Booking> activeBookings = bookingService.getActiveBookings();
@@ -156,12 +131,6 @@ public class SocketService {
         }
     }
 
-    /**
-     * Process socket command and return response.
-     *
-     * @param command The command to process
-     * @return Response string
-     */
     public String processCommand(String command) {
         if (command == null || command.trim().isEmpty()) {
             return "{\"error\":\"Empty command\"}";
@@ -187,11 +156,6 @@ public class SocketService {
         }
     }
 
-    /**
-     * Get help message with available commands.
-     *
-     * @return JSON string with help information
-     */
     private String getHelpMessage() {
         try {
             Map<String, Object> help = new HashMap<>();

@@ -14,11 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
 
-/**
- * Scheduled task to automatically complete expired bookings.
- * Runs periodically to check for ACTIVE bookings that have passed their end datetime
- * and automatically marks them as COMPLETED, freeing up lockers for new bookings.
- */
 @Component
 public class BookingScheduler {
 
@@ -33,20 +28,6 @@ public class BookingScheduler {
     @Value("${scheduler.booking.enabled:true}")
     private boolean schedulerEnabled;
 
-    /**
-     * Automatically completes expired ACTIVE bookings.
-     * Runs according to the cron expression configured in application.properties.
-     * Default: Every 5 minutes (0 *\/5 * * * *)
-     *
-     * Process:
-     * 1. Query all ACTIVE bookings where endDatetime < current time
-     * 2. Call bookingService.completeBooking() for each expired booking
-     * 3. This automatically:
-     *    - Updates booking status to COMPLETED
-     *    - Updates locker status to AVAILABLE
-     *    - Broadcasts WebSocket events for real-time UI updates
-     *    - Saves changes to file storage
-     */
     @Scheduled(cron = "${scheduler.booking.cron:0 */5 * * * *}")
     @Transactional
     public void autoCompleteExpiredBookings() {

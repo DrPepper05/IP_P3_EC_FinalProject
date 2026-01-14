@@ -2,9 +2,6 @@ package com.luggagestorage.model.dto;
 
 import com.luggagestorage.model.enums.Role;
 
-/**
- * DTO for authentication response containing JWT token and user info.
- */
 public class AuthResponse {
 
     private String token;

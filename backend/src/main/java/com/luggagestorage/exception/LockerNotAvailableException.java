@@ -1,9 +1,5 @@
 package com.luggagestorage.exception;
 
-/**
- * Custom exception thrown when a locker is not available for booking.
- * Part of the optional requirement: "Create at least 2 custom exceptions" (1 point).
- */
 public class LockerNotAvailableException extends RuntimeException {
 
     private Long lockerId;

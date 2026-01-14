@@ -12,10 +12,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-/**
- * Person entity representing users in the system (both customers and admins).
- * Part of the minimum 4 classes requirement.
- */
 @Entity
 @Table(name = "persons")
 public class Person {
@@ -47,10 +43,6 @@ public class Person {
     @Column(nullable = false)
     private Role role;
 
-    /**
-     * One-to-Many relationship with Booking.
-     * Part of the minimum 2 collections requirement.
-     */
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonIgnore
     private List<Booking> bookings = new ArrayList<>();
@@ -114,12 +106,6 @@ public class Person {
         this.role = role;
     }
 
-    /**
-     * Required method: Get all bookings for this person.
-     * Returns the collection of bookings (part of minimum 2 collections requirement).
-     *
-     * @return List of bookings associated with this person
-     */
     public List<Booking> getBookings() {
         return bookings;
     }
@@ -128,17 +114,11 @@ public class Person {
         this.bookings = bookings;
     }
 
-    /**
-     * Add a booking to this person's bookings.
-     */
     public void addBooking(Booking booking) {
         bookings.add(booking);
         booking.setCustomer(this);
     }
 
-    /**
-     * Remove a booking from this person's bookings.
-     */
     public void removeBooking(Booking booking) {
         bookings.remove(booking);
         booking.setCustomer(null);

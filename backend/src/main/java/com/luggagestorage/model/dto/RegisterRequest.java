@@ -7,10 +7,6 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-/**
- * DTO for user registration requests.
- * Includes input validation annotations (optional feature for 1 point).
- */
 public class RegisterRequest {
 
     @NotBlank(message = "Email is required")

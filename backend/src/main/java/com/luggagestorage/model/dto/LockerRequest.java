@@ -7,10 +7,6 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
-/**
- * DTO for locker creation and update requests.
- * Includes input validation annotations (optional feature for 1 point).
- */
 public class LockerRequest {
 
     @NotBlank(message = "Locker number is required")

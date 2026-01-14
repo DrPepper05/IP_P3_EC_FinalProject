@@ -18,10 +18,6 @@ import java.security.Key;
 import java.util.Date;
 import java.util.stream.Collectors;
 
-/**
- * JWT Token Provider for generating and validating JWT tokens.
- * Part of the JWT-based authentication requirement.
- */
 @Component
 public class JwtTokenProvider {
 
@@ -37,28 +33,15 @@ public class JwtTokenProvider {
 
     @PostConstruct
     public void init() {
-        // Create a secure key from the secret
+
         this.key = Keys.hmacShaKeyFor(jwtSecret.getBytes(StandardCharsets.UTF_8));
     }
 
-    /**
-     * Generate JWT token from Authentication.
-     *
-     * @param authentication The authentication object
-     * @return JWT token string
-     */
     public String generateToken(Authentication authentication) {
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         return generateTokenFromUsername(userDetails.getUsername(), userDetails.getAuthorities().toString());
     }
 
-    /**
-     * Generate JWT token from username.
-     *
-     * @param username The username (email)
-     * @param roles    The user roles
-     * @return JWT token string
-     */
     public String generateTokenFromUsername(String username, String roles) {
         Date now = new Date();
         Date expiryDate = new Date(now.getTime() + jwtExpirationMs);
@@ -72,12 +55,6 @@ public class JwtTokenProvider {
                 .compact();
     }
 
-    /**
-     * Get username from JWT token.
-     *
-     * @param token The JWT token
-     * @return The username
-     */
     public String getUsernameFromToken(String token) {
         Claims claims = Jwts.parserBuilder()
                 .setSigningKey(key)
@@ -88,12 +65,6 @@ public class JwtTokenProvider {
         return claims.getSubject();
     }
 
-    /**
-     * Get roles from JWT token.
-     *
-     * @param token The JWT token
-     * @return The roles as string
-     */
     public String getRolesFromToken(String token) {
         Claims claims = Jwts.parserBuilder()
                 .setSigningKey(key)
@@ -104,12 +75,6 @@ public class JwtTokenProvider {
         return claims.get("roles", String.class);
     }
 
-    /**
-     * Validate JWT token.
-     *
-     * @param token The JWT token
-     * @return true if valid, false otherwise
-     */
     public boolean validateToken(String token) {
         try {
             Jwts.parserBuilder()
@@ -131,12 +96,6 @@ public class JwtTokenProvider {
         return false;
     }
 
-    /**
-     * Check if token is expired.
-     *
-     * @param token The JWT token
-     * @return true if expired, false otherwise
-     */
     public boolean isTokenExpired(String token) {
         try {
             Claims claims = Jwts.parserBuilder()
@@ -153,12 +112,6 @@ public class JwtTokenProvider {
         }
     }
 
-    /**
-     * Get expiration date from token.
-     *
-     * @param token The JWT token
-     * @return The expiration date
-     */
     public Date getExpirationDateFromToken(String token) {
         Claims claims = Jwts.parserBuilder()
                 .setSigningKey(key)

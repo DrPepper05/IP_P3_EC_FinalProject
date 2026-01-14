@@ -6,10 +6,6 @@ import javax.validation.constraints.Future;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
-/**
- * DTO for booking creation and update requests.
- * Includes input validation annotations (optional feature for 1 point).
- */
 public class BookingRequest {
 
     @NotNull(message = "Locker ID is required")

@@ -1,9 +1,5 @@
 package com.luggagestorage.model.enums;
 
-/**
- * Enum representing locker sizes.
- * Part of the minimum 2 interfaces/enums requirement.
- */
 public enum Size {
     SMALL("Small", "Suitable for backpacks and small bags"),
     MEDIUM("Medium", "Suitable for carry-on luggage"),

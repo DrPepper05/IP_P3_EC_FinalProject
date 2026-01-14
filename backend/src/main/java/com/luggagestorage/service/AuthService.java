@@ -18,10 +18,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-/**
- * Service for authentication operations (registration and login).
- * Implements password hashing and JWT token generation.
- */
 @Service
 @Transactional
 public class AuthService {
@@ -44,30 +40,20 @@ public class AuthService {
         this.jwtTokenProvider = jwtTokenProvider;
     }
 
-    /**
-     * Register a new user.
-     * Implements password hashing (security requirement).
-     *
-     * @param registerRequest The registration request
-     * @return Authentication response with JWT token
-     */
     public AuthResponse register(RegisterRequest registerRequest) {
         logger.info("Registering new user with email: {}", registerRequest.getEmail());
 
-        // Check if email already exists
         if (personRepository.existsByEmail(registerRequest.getEmail())) {
             throw new IllegalArgumentException("Email already exists: " + registerRequest.getEmail());
         }
 
-        // Validate password strength (optional - part of input validation)
         if (registerRequest.getPassword().length() < 6) {
             throw new IllegalArgumentException("Password must be at least 6 characters long");
         }
 
-        // Create new person with hashed password
         Person person = new Person();
         person.setEmail(registerRequest.getEmail());
-        person.setPasswordHash(passwordEncoder.encode(registerRequest.getPassword())); // Hash password
+        person.setPasswordHash(passwordEncoder.encode(registerRequest.getPassword()));
         person.setFirstName(registerRequest.getFirstName());
         person.setLastName(registerRequest.getLastName());
         person.setRole(registerRequest.getRole());
@@ -75,11 +61,9 @@ public class AuthService {
         Person savedPerson = personRepository.save(person);
         logger.info("User registered successfully with ID: {}", savedPerson.getId());
 
-        // Generate JWT token
         String roles = savedPerson.getRole().getAuthority();
         String token = jwtTokenProvider.generateTokenFromUsername(savedPerson.getEmail(), roles);
 
-        // Create response
         return new AuthResponse(
                 token,
                 savedPerson.getId(),
@@ -90,19 +74,11 @@ public class AuthService {
         );
     }
 
-    /**
-     * Authenticate user and generate JWT token.
-     * Part of the login() method requirement from Person entity.
-     *
-     * @param loginRequest The login request
-     * @return Authentication response with JWT token
-     * @throws BadCredentialsException if credentials are invalid
-     */
     public AuthResponse login(LoginRequest loginRequest) {
         logger.info("User attempting to login with email: {}", loginRequest.getEmail());
 
         try {
-            // Authenticate user
+
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
                             loginRequest.getEmail(),
@@ -112,16 +88,13 @@ public class AuthService {
 
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
-            // Generate JWT token
             String token = jwtTokenProvider.generateToken(authentication);
 
-            // Get user details
             Person person = personRepository.findByEmail(loginRequest.getEmail())
                     .orElseThrow(() -> new BadCredentialsException("User not found"));
 
             logger.info("User logged in successfully: {}", person.getEmail());
 
-            // Create response
             return new AuthResponse(
                     token,
                     person.getId(),
@@ -137,11 +110,6 @@ public class AuthService {
         }
     }
 
-    /**
-     * Get current authenticated user.
-     *
-     * @return The current user
-     */
     public Person getCurrentUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
@@ -153,31 +121,17 @@ public class AuthService {
         return personRepository.findByEmail(email).orElse(null);
     }
 
-    /**
-     * Check if current user is authenticated.
-     *
-     * @return true if authenticated, false otherwise
-     */
     public boolean isAuthenticated() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return authentication != null && authentication.isAuthenticated()
                 && !authentication.getName().equals("anonymousUser");
     }
 
-    /**
-     * Check if current user has admin role.
-     *
-     * @return true if admin, false otherwise
-     */
     public boolean isCurrentUserAdmin() {
         Person currentUser = getCurrentUser();
         return currentUser != null && currentUser.isAdmin();
     }
 
-    /**
-     * Logout current user.
-     * Clears the security context.
-     */
     public void logout() {
         SecurityContextHolder.clearContext();
         logger.info("User logged out successfully");

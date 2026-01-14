@@ -12,10 +12,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-/**
- * Locker entity representing storage lockers in the system.
- * Part of the minimum 4 classes requirement.
- */
 @Entity
 @Table(name = "lockers")
 public class Locker {
@@ -67,18 +63,10 @@ public class Locker {
     @Column(name = "section", nullable = false)
     private String section;
 
-    /**
-     * Version field for optimistic locking.
-     * Prevents concurrent modifications and race conditions.
-     */
     @Version
     @Column(name = "version")
     private Long version = 0L;
 
-    /**
-     * One-to-Many relationship with Booking.
-     * Part of the minimum 2 collections requirement.
-     */
     @OneToMany(mappedBy = "locker", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonIgnore
     private List<Booking> bookings = new ArrayList<>();
@@ -204,12 +192,6 @@ public class Locker {
         this.version = version;
     }
 
-    /**
-     * Required method: Get all bookings for this locker.
-     * Returns the collection of bookings (part of minimum 2 collections requirement).
-     *
-     * @return List of bookings associated with this locker
-     */
     public List<Booking> getBookings() {
         return bookings;
     }
@@ -218,50 +200,28 @@ public class Locker {
         this.bookings = bookings;
     }
 
-    /**
-     * Add a booking to this locker's bookings.
-     */
     public void addBooking(Booking booking) {
         bookings.add(booking);
         booking.setLocker(this);
     }
 
-    /**
-     * Remove a booking from this locker's bookings.
-     */
     public void removeBooking(Booking booking) {
         bookings.remove(booking);
         booking.setLocker(null);
     }
 
-    /**
-     * Required method: Check if the locker is available.
-     *
-     * @return true if the locker status is AVAILABLE, false otherwise
-     */
     public boolean isAvailable() {
         return this.status == Status.AVAILABLE;
     }
 
-    /**
-     * Required method: Update the locker status.
-     *
-     * @param newStatus The new status to set
-     */
     public void updateStatus(Status newStatus) {
         this.status = newStatus;
     }
 
-    /**
-     * Mark the locker as available.
-     */
     public void markAsAvailable() {
         this.status = Status.AVAILABLE;
     }
 
-    /**
-     * Mark the locker as occupied.
-     */
     public void markAsOccupied() {
         this.status = Status.OCCUPIED;
     }

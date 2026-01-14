@@ -6,9 +6,6 @@ import com.luggagestorage.model.enums.Size;
 
 import java.time.LocalDateTime;
 
-/**
- * DTO for booking response.
- */
 public class BookingResponse {
 
     private Long id;

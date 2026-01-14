@@ -13,18 +13,9 @@ import org.springframework.context.annotation.Configuration;
 
 import java.util.Arrays;
 
-/**
- * OpenAPI (Swagger) configuration for API documentation.
- * Accessible at: http://localhost:8080/swagger-ui.html
- */
 @Configuration
 public class OpenApiConfig {
 
-    /**
-     * Configure OpenAPI documentation.
-     *
-     * @return OpenAPI configuration
-     */
     @Bean
     public OpenAPI customOpenAPI() {
         final String securitySchemeName = "bearerAuth";

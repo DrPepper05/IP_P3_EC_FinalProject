@@ -21,12 +21,6 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
-/**
- * Socket Server implementation using java.net.ServerSocket.
- * Listens for client connections and handles them in separate threads.
- * Part of Requirement 4 (1p): Use sockets for client-server communication.
- * Also contributes to Requirement 3 (1p): Use threads to handle multiple clients.
- */
 @Component
 public class SocketServer {
 
@@ -51,14 +45,11 @@ public class SocketServer {
     @Autowired
     public SocketServer(SocketService socketService) {
         this.socketService = socketService;
-        this.executorService = Executors.newFixedThreadPool(10); // Thread pool for handling multiple clients
+        this.executorService = Executors.newFixedThreadPool(10);
         this.running = new AtomicBoolean(false);
         this.clientCounter = new AtomicInteger(0);
     }
 
-    /**
-     * Start the socket server automatically after bean initialization.
-     */
     @PostConstruct
     public void start() {
         if (!enabled) {
@@ -78,9 +69,6 @@ public class SocketServer {
         logger.info("Socket server started on port {}", port);
     }
 
-    /**
-     * Main server loop that accepts client connections.
-     */
     private void runServer() {
         try {
             serverSocket = new ServerSocket(port);
@@ -89,13 +77,12 @@ public class SocketServer {
 
             while (running.get() && !Thread.currentThread().isInterrupted()) {
                 try {
-                    // Accept client connection (blocking call)
+
                     Socket clientSocket = serverSocket.accept();
                     int clientId = clientCounter.incrementAndGet();
                     logger.info("New client connection accepted: Client #{} from {}",
                             clientId, clientSocket.getInetAddress());
 
-                    // Handle client in separate thread using thread pool
                     executorService.submit(() -> handleClient(clientSocket, clientId));
 
                 } catch (SocketException e) {
@@ -116,13 +103,6 @@ public class SocketServer {
         }
     }
 
-    /**
-     * Handle individual client connection.
-     * Runs in a separate thread from the thread pool.
-     *
-     * @param clientSocket The client socket
-     * @param clientId     Unique client identifier
-     */
     private void handleClient(Socket clientSocket, int clientId) {
         logger.info("Handling Client #{} in thread: {}", clientId, Thread.currentThread().getName());
 
@@ -130,21 +110,19 @@ public class SocketServer {
                 BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
                 PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true)
         ) {
-            // Send welcome message
+
             out.println("{\"message\":\"Welcome to Luggage Storage System Socket Server\",\"clientId\":" + clientId + ",\"commands\":\"Type HELP for available commands\"}");
 
             String inputLine;
             while ((inputLine = in.readLine()) != null) {
                 logger.info("Client #{} sent command: {}", clientId, inputLine);
 
-                // Check for quit command
                 if ("QUIT".equalsIgnoreCase(inputLine.trim())) {
                     out.println("{\"message\":\"Goodbye!\"}");
                     logger.info("Client #{} requested disconnect", clientId);
                     break;
                 }
 
-                // Process command using SocketService
                 String response = socketService.processCommand(inputLine);
                 out.println(response);
             }
@@ -161,9 +139,6 @@ public class SocketServer {
         }
     }
 
-    /**
-     * Stop the socket server gracefully.
-     */
     @PreDestroy
     public void stop() {
         if (!running.get()) {
@@ -175,19 +150,17 @@ public class SocketServer {
         running.set(false);
 
         try {
-            // Close server socket to stop accepting new connections
+
             if (serverSocket != null && !serverSocket.isClosed()) {
                 serverSocket.close();
             }
 
-            // Shutdown executor service
             executorService.shutdown();
             if (!executorService.awaitTermination(5, TimeUnit.SECONDS)) {
                 logger.warn("Executor service did not terminate in time, forcing shutdown");
                 executorService.shutdownNow();
             }
 
-            // Wait for server thread to finish
             if (serverThread != null && serverThread.isAlive()) {
                 serverThread.interrupt();
                 serverThread.join(2000);
@@ -202,29 +175,14 @@ public class SocketServer {
         }
     }
 
-    /**
-     * Check if server is running.
-     *
-     * @return true if running, false otherwise
-     */
     public boolean isRunning() {
         return running.get();
     }
 
-    /**
-     * Get the port number.
-     *
-     * @return port number
-     */
     public int getPort() {
         return port;
     }
 
-    /**
-     * Get the number of connected clients.
-     *
-     * @return total number of clients served
-     */
     public int getClientCount() {
         return clientCounter.get();
     }

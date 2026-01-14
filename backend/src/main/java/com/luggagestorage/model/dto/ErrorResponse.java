@@ -4,10 +4,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * DTO for error responses.
- * Used by GlobalExceptionHandler to return consistent error messages.
- */
 public class ErrorResponse {
 
     private LocalDateTime timestamp;

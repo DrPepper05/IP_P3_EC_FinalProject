@@ -2,16 +2,12 @@ package com.luggagestorage.model.dto;
 
 import java.time.LocalDateTime;
 
-/**
- * DTO for WebSocket booking events.
- * Broadcasts real-time updates when bookings are created, updated, or cancelled.
- */
 public class BookingEvent {
 
     private Long bookingId;
     private Long lockerId;
     private String lockerNumber;
-    private String eventType; // CREATED, UPDATED, CANCELLED, COMPLETED
+    private String eventType;
     private String customerName;
     private LocalDateTime timestamp;
     private String message;

@@ -1,9 +1,5 @@
 package com.luggagestorage.model.enums;
 
-/**
- * Enum representing locker availability status.
- * Part of the minimum 2 interfaces/enums requirement.
- */
 public enum Status {
     AVAILABLE("Available", "Locker is ready to be booked"),
     OCCUPIED("Occupied", "Locker is currently in use"),

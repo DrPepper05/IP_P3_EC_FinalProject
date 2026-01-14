@@ -25,10 +25,6 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 
-/**
- * Service layer for Booking entity.
- * Provides CRUD operations, price calculation, availability checking, and business logic for booking management.
- */
 @Service
 @Transactional
 public class BookingService {
@@ -58,54 +54,32 @@ public class BookingService {
         this.messagingTemplate = messagingTemplate;
     }
 
-    /**
-     * Create a new booking.
-     * Validates booking times, checks locker availability, and calculates price.
-     * Uses pessimistic locking to prevent race conditions.
-     *
-     * @param customerId The customer ID
-     * @param lockerId   The locker ID
-     * @param startTime  Booking start time
-     * @param endTime    Booking end time
-     * @return The created booking
-     * @throws InvalidBookingTimeException  if booking times are invalid
-     * @throws LockerNotAvailableException if locker is not available
-     */
     @Transactional(isolation = Isolation.SERIALIZABLE)
     public Booking createBooking(Long customerId, Long lockerId, LocalDateTime startTime, LocalDateTime endTime) {
         logger.info("Creating new booking for customer {} and locker {}", customerId, lockerId);
 
         try {
-            // Validate booking times
+
             validateBookingTimes(startTime, endTime);
 
-            // Get customer
             Person customer = personService.getPersonById(customerId);
 
-            // Get locker WITH PESSIMISTIC LOCK to prevent race conditions
             Locker locker = lockerRepository.findByIdWithLock(lockerId)
                     .orElseThrow(() -> new ResourceNotFoundException("Locker", "id", lockerId));
 
-            // Check for overlapping bookings (time-based availability validation)
-            // This check is now atomic with the lock
             checkForOverlappingBookings(lockerId, startTime, endTime);
 
-            // Create booking
             Booking booking = new Booking(customer, locker, startTime, endTime);
             booking.setStatus(BookingStatus.ACTIVE);
 
-            // Calculate and set price using the entity's calculatePrice method
             booking.updateTotalPrice();
 
-            // Save booking
             Booking savedBooking = bookingRepository.save(booking);
 
-            // Update locker status to OCCUPIED
             lockerService.updateLockerStatus(lockerId, Status.OCCUPIED);
 
             saveToFile();
 
-            // Broadcast WebSocket event for real-time updates
             broadcastBookingEvent(savedBooking, "CREATED", "New booking created");
             broadcastLockerAvailabilityEvent(locker, "Locker now occupied");
 
@@ -119,14 +93,6 @@ public class BookingService {
         }
     }
 
-    /**
-     * Validate booking times.
-     * Throws InvalidBookingTimeException if times are invalid (custom exception for 1 point).
-     *
-     * @param startTime Booking start time
-     * @param endTime   Booking end time
-     * @throws InvalidBookingTimeException if times are invalid
-     */
     private void validateBookingTimes(LocalDateTime startTime, LocalDateTime endTime) {
         if (startTime == null || endTime == null) {
             throw new InvalidBookingTimeException("Start time and end time are required", startTime, endTime);
@@ -145,15 +111,6 @@ public class BookingService {
         }
     }
 
-    /**
-     * Check for overlapping bookings.
-     * Throws LockerNotAvailableException if overlapping bookings exist (custom exception for 1 point).
-     *
-     * @param lockerId  The locker ID
-     * @param startTime Booking start time
-     * @param endTime   Booking end time
-     * @throws LockerNotAvailableException if overlapping bookings exist
-     */
     private void checkForOverlappingBookings(Long lockerId, LocalDateTime startTime, LocalDateTime endTime) {
         List<Booking> overlappingBookings = bookingRepository.findOverlappingBookings(lockerId, startTime, endTime);
 
@@ -163,105 +120,50 @@ public class BookingService {
         }
     }
 
-    /**
-     * Get a booking by ID.
-     *
-     * @param id The booking ID
-     * @return The booking
-     * @throws ResourceNotFoundException if booking not found
-     */
     public Booking getBookingById(Long id) {
         return bookingRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Booking", "id", id));
     }
 
-    /**
-     * Get all bookings.
-     *
-     * @return List of all bookings
-     */
     public List<Booking> getAllBookings() {
         return bookingRepository.findAll();
     }
 
-    /**
-     * Get all bookings for a specific customer.
-     *
-     * @param customerId The customer ID
-     * @return List of customer's bookings
-     */
     public List<Booking> getBookingsByCustomer(Long customerId) {
         return bookingRepository.findByCustomerId(customerId);
     }
 
-    /**
-     * Get all active bookings for a specific customer.
-     *
-     * @param customerId The customer ID
-     * @return List of customer's active bookings
-     */
     public List<Booking> getActiveBookingsByCustomer(Long customerId) {
         return bookingRepository.findByCustomerIdAndStatus(customerId, BookingStatus.ACTIVE);
     }
 
-    /**
-     * Get all bookings for a specific locker.
-     *
-     * @param lockerId The locker ID
-     * @return List of locker's bookings
-     */
     public List<Booking> getBookingsByLocker(Long lockerId) {
         return bookingRepository.findByLockerId(lockerId);
     }
 
-    /**
-     * Get all active bookings.
-     *
-     * @return List of all active bookings
-     */
     public List<Booking> getActiveBookings() {
         return bookingRepository.findByStatus(BookingStatus.ACTIVE);
     }
 
-    /**
-     * Get all bookings with a specific status.
-     *
-     * @param status The booking status
-     * @return List of bookings with the specified status
-     */
     public List<Booking> getBookingsByStatus(BookingStatus status) {
         return bookingRepository.findByStatus(status);
     }
 
-    /**
-     * Update a booking.
-     *
-     * @param id        The booking ID
-     * @param startTime New start time (optional)
-     * @param endTime   New end time (optional)
-     * @return The updated booking
-     * @throws InvalidBookingTimeException  if new times are invalid
-     * @throws LockerNotAvailableException if locker is not available for new times
-     */
     public Booking updateBooking(Long id, LocalDateTime startTime, LocalDateTime endTime) {
         logger.info("Updating booking with ID: {}", id);
 
         Booking booking = getBookingById(id);
 
-        // Can only update active bookings
         if (booking.getStatus() != BookingStatus.ACTIVE) {
             throw new IllegalArgumentException("Can only update active bookings");
         }
 
-        // Validate new times if provided
         if (startTime != null && endTime != null) {
             validateBookingTimes(startTime, endTime);
 
-            // Check for overlapping bookings (excluding current booking)
             List<Booking> overlappingBookings = bookingRepository.findOverlappingBookings(
                     booking.getLocker().getId(), startTime, endTime);
 
-            // Remove current booking from overlapping list
             overlappingBookings.removeIf(b -> b.getId().equals(id));
 
             if (!overlappingBookings.isEmpty()) {
@@ -270,52 +172,38 @@ public class BookingService {
                         booking.getLocker().getId());
             }
 
-            // Update times
             booking.setStartDatetime(startTime);
             booking.setEndDatetime(endTime);
 
-            // Recalculate price
             booking.updateTotalPrice();
         }
 
         Booking updatedBooking = bookingRepository.save(booking);
         saveToFile();
 
-        // Broadcast WebSocket event for real-time updates
         broadcastBookingEvent(updatedBooking, "UPDATED", "Booking updated");
 
         logger.info("Booking updated successfully with ID: {}", updatedBooking.getId());
         return updatedBooking;
     }
 
-    /**
-     * Cancel a booking.
-     * Uses the cancel() method from the Booking entity.
-     *
-     * @param id The booking ID
-     * @return The cancelled booking
-     */
     public Booking cancelBooking(Long id) {
         logger.info("Cancelling booking with ID: {}", id);
 
         Booking booking = getBookingById(id);
 
-        // Can only cancel active bookings
         if (booking.getStatus() != BookingStatus.ACTIVE) {
             throw new IllegalArgumentException("Can only cancel active bookings");
         }
 
-        // Cancel booking using entity method
         booking.cancel();
 
-        // Update locker status to AVAILABLE
         Locker locker = booking.getLocker();
         lockerService.updateLockerStatus(locker.getId(), Status.AVAILABLE);
 
         Booking cancelledBooking = bookingRepository.save(booking);
         saveToFile();
 
-        // Broadcast WebSocket event for real-time updates
         broadcastBookingEvent(cancelledBooking, "CANCELLED", "Booking cancelled");
         broadcastLockerAvailabilityEvent(locker, "Locker now available");
 
@@ -323,34 +211,23 @@ public class BookingService {
         return cancelledBooking;
     }
 
-    /**
-     * Complete a booking.
-     * Uses the complete() method from the Booking entity.
-     *
-     * @param id The booking ID
-     * @return The completed booking
-     */
     public Booking completeBooking(Long id) {
         logger.info("Completing booking with ID: {}", id);
 
         Booking booking = getBookingById(id);
 
-        // Can only complete active bookings
         if (booking.getStatus() != BookingStatus.ACTIVE) {
             throw new IllegalArgumentException("Can only complete active bookings");
         }
 
-        // Complete booking using entity method
         booking.complete();
 
-        // Update locker status to AVAILABLE
         Locker locker = booking.getLocker();
         lockerService.updateLockerStatus(locker.getId(), Status.AVAILABLE);
 
         Booking completedBooking = bookingRepository.save(booking);
         saveToFile();
 
-        // Broadcast WebSocket event for real-time updates
         broadcastBookingEvent(completedBooking, "COMPLETED", "Booking completed");
         broadcastLockerAvailabilityEvent(locker, "Locker now available");
 
@@ -358,17 +235,11 @@ public class BookingService {
         return completedBooking;
     }
 
-    /**
-     * Delete a booking by ID.
-     *
-     * @param id The booking ID
-     */
     public void deleteBooking(Long id) {
         logger.info("Deleting booking with ID: {}", id);
 
         Booking booking = getBookingById(id);
 
-        // If booking is active, mark locker as available
         if (booking.getStatus() == BookingStatus.ACTIVE) {
             lockerService.updateLockerStatus(booking.getLocker().getId(), Status.AVAILABLE);
         }
@@ -378,24 +249,16 @@ public class BookingService {
         logger.info("Booking deleted successfully with ID: {}", id);
     }
 
-    /**
-     * Save all bookings to JSON file.
-     * Part of the file I/O requirement.
-     */
     private void saveToFile() {
         try {
             List<Booking> bookings = bookingRepository.findAll();
             fileStorageService.saveToFile(bookings, BOOKINGS_FILE);
         } catch (IOException e) {
             logger.error("Failed to save bookings to file: {}", e.getMessage());
-            // Don't throw exception - file storage is supplementary
+
         }
     }
 
-    /**
-     * Load bookings from JSON file.
-     * Part of the file I/O requirement.
-     */
     public void loadFromFile() {
         try {
             if (fileStorageService.fileExists(BOOKINGS_FILE)) {
@@ -407,13 +270,6 @@ public class BookingService {
         }
     }
 
-    /**
-     * Broadcast booking event via WebSocket for real-time updates.
-     *
-     * @param booking   The booking
-     * @param eventType Event type (CREATED, UPDATED, CANCELLED, COMPLETED)
-     * @param message   Event message
-     */
     private void broadcastBookingEvent(Booking booking, String eventType, String message) {
         try {
             BookingEvent event = new BookingEvent(
@@ -428,16 +284,10 @@ public class BookingService {
             logger.debug("Broadcast booking event: {}", event);
         } catch (Exception e) {
             logger.error("Failed to broadcast booking event: {}", e.getMessage());
-            // Don't throw exception - WebSocket is supplementary
+
         }
     }
 
-    /**
-     * Broadcast locker availability event via WebSocket for real-time updates.
-     *
-     * @param locker  The locker
-     * @param message Event message
-     */
     private void broadcastLockerAvailabilityEvent(Locker locker, String message) {
         try {
             LockerAvailabilityEvent event = new LockerAvailabilityEvent(
@@ -451,7 +301,7 @@ public class BookingService {
             logger.debug("Broadcast locker availability event: {}", event);
         } catch (Exception e) {
             logger.error("Failed to broadcast locker availability event: {}", e.getMessage());
-            // Don't throw exception - WebSocket is supplementary
+
         }
     }
 }

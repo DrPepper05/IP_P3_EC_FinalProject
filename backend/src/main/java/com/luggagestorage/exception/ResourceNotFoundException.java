@@ -1,9 +1,5 @@
 package com.luggagestorage.exception;
 
-/**
- * Custom exception thrown when a requested resource is not found.
- * Part of the optional requirement: "Create at least 2 custom exceptions" (1 point).
- */
 public class ResourceNotFoundException extends RuntimeException {
 
     private String resourceName;

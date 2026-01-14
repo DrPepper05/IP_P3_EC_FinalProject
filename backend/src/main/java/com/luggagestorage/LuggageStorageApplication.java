@@ -11,17 +11,6 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
-/**
- * Main application class for the Luggage Storage System.
- * Supports configuration via application.properties profiles and command-line arguments.
- * Part of the optional requirement: "Configuration files and/or program arguments" (1 point).
- *
- * Usage examples:
- * - Default (dev profile): java -jar luggage-storage-system.jar
- * - Production profile: java -jar luggage-storage-system.jar --spring.profiles.active=prod
- * - Custom port: java -jar luggage-storage-system.jar --server.port=9090
- * - Custom database: java -jar luggage-storage-system.jar --spring.datasource.url=jdbc:mysql://localhost:3306/mydb
- */
 @SpringBootApplication
 @EnableScheduling
 public class LuggageStorageApplication {
@@ -34,9 +23,6 @@ public class LuggageStorageApplication {
         logApplicationStartup(context);
     }
 
-    /**
-     * Print application banner.
-     */
     private static void printBanner() {
         System.out.println("\n=======================================================");
         System.out.println("   LUGGAGE STORAGE SYSTEM");
@@ -45,13 +31,6 @@ public class LuggageStorageApplication {
         System.out.println("=======================================================\n");
     }
 
-    /**
-     * Log application startup information including:
-     * - Active profiles
-     * - Server port
-     * - Local and external URLs
-     * - Database URL
-     */
     private static void logApplicationStartup(ConfigurableApplicationContext context) {
         Environment env = context.getEnvironment();
 

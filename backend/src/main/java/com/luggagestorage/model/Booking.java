@@ -8,10 +8,6 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Objects;
 
-/**
- * Booking entity representing locker reservations.
- * Part of the minimum 4 classes requirement.
- */
 @Entity
 @Table(name = "bookings")
 public class Booking {
@@ -20,19 +16,11 @@ public class Booking {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    /**
-     * Many-to-One relationship with Person (Customer).
-     * A booking belongs to one customer.
-     */
     @NotNull(message = "Customer is required")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "customer_id", nullable = false)
     private Person customer;
 
-    /**
-     * Many-to-One relationship with Locker.
-     * A booking is associated with one locker.
-     */
     @NotNull(message = "Locker is required")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "locker_id", nullable = false)
@@ -55,10 +43,6 @@ public class Booking {
     @Column(name = "total_price", nullable = false)
     private Double totalPrice;
 
-    /**
-     * Version field for optimistic locking.
-     * Prevents concurrent modifications and race conditions.
-     */
     @Version
     @Column(name = "version")
     private Long version = 0L;
@@ -139,76 +123,44 @@ public class Booking {
         this.version = version;
     }
 
-    /**
-     * Required method: Calculate the total price based on duration and hourly rate.
-     * Price = (number of hours) × (hourly rate)
-     *
-     * @return The calculated total price
-     */
     public double calculatePrice() {
         if (startDatetime == null || endDatetime == null || locker == null) {
             return 0.0;
         }
 
-        // Calculate the number of hours between start and end time
         long hours = ChronoUnit.HOURS.between(startDatetime, endDatetime);
 
-        // If less than 1 hour, charge for 1 hour minimum
         if (hours < 1) {
             hours = 1;
         }
 
-        // Calculate total price: hours × hourly rate
         return hours * locker.getHourlyRate();
     }
 
-    /**
-     * Recalculate and update the total price.
-     */
     public void updateTotalPrice() {
         this.totalPrice = calculatePrice();
     }
 
-    /**
-     * Required method: Cancel the booking.
-     * Sets the booking status to CANCELLED.
-     */
     public void cancel() {
         this.status = BookingStatus.CANCELLED;
     }
 
-    /**
-     * Required method: Complete the booking.
-     * Sets the booking status to COMPLETED.
-     */
     public void complete() {
         this.status = BookingStatus.COMPLETED;
     }
 
-    /**
-     * Check if the booking is active.
-     */
     public boolean isActive() {
         return this.status == BookingStatus.ACTIVE;
     }
 
-    /**
-     * Check if the booking is cancelled.
-     */
     public boolean isCancelled() {
         return this.status == BookingStatus.CANCELLED;
     }
 
-    /**
-     * Check if the booking is completed.
-     */
     public boolean isCompleted() {
         return this.status == BookingStatus.COMPLETED;
     }
 
-    /**
-     * Get the duration in hours.
-     */
     public long getDurationInHours() {
         if (startDatetime == null || endDatetime == null) {
             return 0;

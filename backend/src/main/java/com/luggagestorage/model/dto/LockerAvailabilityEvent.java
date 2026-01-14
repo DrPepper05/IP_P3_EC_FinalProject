@@ -4,10 +4,6 @@ import com.luggagestorage.model.enums.Status;
 
 import java.time.LocalDateTime;
 
-/**
- * DTO for WebSocket locker availability events.
- * Broadcasts real-time updates when locker status changes.
- */
 public class LockerAvailabilityEvent {
 
     private Long lockerId;

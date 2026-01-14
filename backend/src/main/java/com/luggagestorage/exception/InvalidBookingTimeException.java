@@ -2,10 +2,6 @@ package com.luggagestorage.exception;
 
 import java.time.LocalDateTime;
 
-/**
- * Custom exception thrown when booking time is invalid.
- * Part of the optional requirement: "Create at least 2 custom exceptions" (1 point).
- */
 public class InvalidBookingTimeException extends RuntimeException {
 
     private LocalDateTime startTime;

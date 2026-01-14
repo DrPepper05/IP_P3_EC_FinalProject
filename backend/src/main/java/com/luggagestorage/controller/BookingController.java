@@ -17,10 +17,6 @@ import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
-/**
- * REST Controller for Booking management endpoints.
- * Provides functionality for customers to make bookings and admins to manage all bookings.
- */
 @RestController
 @RequestMapping("/api/bookings")
 @CrossOrigin(origins = "*")
@@ -35,13 +31,6 @@ public class BookingController {
         this.authService = authService;
     }
 
-    /**
-     * Get all bookings.
-     * GET /api/bookings
-     * Admin only
-     *
-     * @return List of all bookings
-     */
     @GetMapping
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<BookingResponse>> getAllBookings() {
@@ -52,20 +41,11 @@ public class BookingController {
         return ResponseEntity.ok(responses);
     }
 
-    /**
-     * Get a booking by ID.
-     * GET /api/bookings/{id}
-     * Customer (own bookings) or Admin
-     *
-     * @param id The booking ID
-     * @return The booking
-     */
     @GetMapping("/{id}")
     @PreAuthorize("hasAnyRole('CUSTOMER', 'ADMIN')")
     public ResponseEntity<BookingResponse> getBookingById(@PathVariable Long id) {
         Booking booking = bookingService.getBookingById(id);
 
-        // Check if customer is accessing their own booking
         Person currentUser = authService.getCurrentUser();
         if (!currentUser.isAdmin() && !booking.getCustomer().getId().equals(currentUser.getId())) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
@@ -74,13 +54,6 @@ public class BookingController {
         return ResponseEntity.ok(convertToResponse(booking));
     }
 
-    /**
-     * Get all bookings for the current customer.
-     * GET /api/bookings/my-bookings
-     * Customer only
-     *
-     * @return List of customer's bookings
-     */
     @GetMapping("/my-bookings")
     @PreAuthorize("hasRole('CUSTOMER')")
     public ResponseEntity<List<BookingResponse>> getMyBookings() {
@@ -92,13 +65,6 @@ public class BookingController {
         return ResponseEntity.ok(responses);
     }
 
-    /**
-     * Get all active bookings for the current customer.
-     * GET /api/bookings/my-bookings/active
-     * Customer only
-     *
-     * @return List of customer's active bookings
-     */
     @GetMapping("/my-bookings/active")
     @PreAuthorize("hasRole('CUSTOMER')")
     public ResponseEntity<List<BookingResponse>> getMyActiveBookings() {
@@ -110,14 +76,6 @@ public class BookingController {
         return ResponseEntity.ok(responses);
     }
 
-    /**
-     * Get all bookings for a specific customer.
-     * GET /api/bookings/customer/{customerId}
-     * Admin only
-     *
-     * @param customerId The customer ID
-     * @return List of customer's bookings
-     */
     @GetMapping("/customer/{customerId}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<BookingResponse>> getBookingsByCustomer(@PathVariable Long customerId) {
@@ -128,14 +86,6 @@ public class BookingController {
         return ResponseEntity.ok(responses);
     }
 
-    /**
-     * Get all bookings for a specific locker.
-     * GET /api/bookings/locker/{lockerId}
-     * Admin only
-     *
-     * @param lockerId The locker ID
-     * @return List of locker's bookings
-     */
     @GetMapping("/locker/{lockerId}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<BookingResponse>> getBookingsByLocker(@PathVariable Long lockerId) {
@@ -146,13 +96,6 @@ public class BookingController {
         return ResponseEntity.ok(responses);
     }
 
-    /**
-     * Get all active bookings.
-     * GET /api/bookings/active
-     * Admin only
-     *
-     * @return List of all active bookings
-     */
     @GetMapping("/active")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<BookingResponse>> getActiveBookings() {
@@ -163,14 +106,6 @@ public class BookingController {
         return ResponseEntity.ok(responses);
     }
 
-    /**
-     * Get bookings by status.
-     * GET /api/bookings/status/{status}
-     * Admin only
-     *
-     * @param status The booking status
-     * @return List of bookings with the specified status
-     */
     @GetMapping("/status/{status}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<BookingResponse>> getBookingsByStatus(@PathVariable BookingStatus status) {
@@ -181,14 +116,6 @@ public class BookingController {
         return ResponseEntity.ok(responses);
     }
 
-    /**
-     * Create a new booking.
-     * POST /api/bookings
-     * Customer or Admin
-     *
-     * @param bookingRequest The booking creation request
-     * @return The created booking
-     */
     @PostMapping
     @PreAuthorize("hasAnyRole('CUSTOMER', 'ADMIN')")
     public ResponseEntity<BookingResponse> createBooking(@Valid @RequestBody BookingRequest bookingRequest) {
@@ -204,22 +131,12 @@ public class BookingController {
         return new ResponseEntity<>(convertToResponse(booking), HttpStatus.CREATED);
     }
 
-    /**
-     * Update a booking.
-     * PUT /api/bookings/{id}
-     * Customer (own bookings) or Admin
-     *
-     * @param id             The booking ID
-     * @param bookingRequest The updated booking data
-     * @return The updated booking
-     */
     @PutMapping("/{id}")
     @PreAuthorize("hasAnyRole('CUSTOMER', 'ADMIN')")
     public ResponseEntity<BookingResponse> updateBooking(@PathVariable Long id,
                                                           @Valid @RequestBody BookingRequest bookingRequest) {
         Booking existingBooking = bookingService.getBookingById(id);
 
-        // Check if customer is updating their own booking
         Person currentUser = authService.getCurrentUser();
         if (!currentUser.isAdmin() && !existingBooking.getCustomer().getId().equals(currentUser.getId())) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
@@ -234,20 +151,11 @@ public class BookingController {
         return ResponseEntity.ok(convertToResponse(updatedBooking));
     }
 
-    /**
-     * Cancel a booking.
-     * PUT /api/bookings/{id}/cancel
-     * Customer (own bookings) or Admin
-     *
-     * @param id The booking ID
-     * @return The cancelled booking
-     */
     @PutMapping("/{id}/cancel")
     @PreAuthorize("hasAnyRole('CUSTOMER', 'ADMIN')")
     public ResponseEntity<BookingResponse> cancelBooking(@PathVariable Long id) {
         Booking existingBooking = bookingService.getBookingById(id);
 
-        // Check if customer is cancelling their own booking
         Person currentUser = authService.getCurrentUser();
         if (!currentUser.isAdmin() && !existingBooking.getCustomer().getId().equals(currentUser.getId())) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
@@ -257,14 +165,6 @@ public class BookingController {
         return ResponseEntity.ok(convertToResponse(cancelledBooking));
     }
 
-    /**
-     * Complete a booking.
-     * PUT /api/bookings/{id}/complete
-     * Admin only
-     *
-     * @param id The booking ID
-     * @return The completed booking
-     */
     @PutMapping("/{id}/complete")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<BookingResponse> completeBooking(@PathVariable Long id) {
@@ -272,14 +172,6 @@ public class BookingController {
         return ResponseEntity.ok(convertToResponse(completedBooking));
     }
 
-    /**
-     * Delete a booking.
-     * DELETE /api/bookings/{id}
-     * Admin only
-     *
-     * @param id The booking ID
-     * @return No content
-     */
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> deleteBooking(@PathVariable Long id) {
@@ -287,12 +179,6 @@ public class BookingController {
         return ResponseEntity.noContent().build();
     }
 
-    /**
-     * Convert Booking entity to BookingResponse DTO.
-     *
-     * @param booking The booking entity
-     * @return The booking response DTO
-     */
     private BookingResponse convertToResponse(Booking booking) {
         BookingResponse response = new BookingResponse();
         response.setId(booking.getId());
