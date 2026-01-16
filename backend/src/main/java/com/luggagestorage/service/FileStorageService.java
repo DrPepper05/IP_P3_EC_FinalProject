@@ -2,6 +2,7 @@ package com.luggagestorage.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.hibernate5.Hibernate5Module;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,9 +36,17 @@ public class FileStorageService {
     public void init() {
 
         objectMapper = new ObjectMapper();
+
+        // Register Hibernate5Module to handle lazy loading
+        Hibernate5Module hibernateModule = new Hibernate5Module();
+        hibernateModule.disable(Hibernate5Module.Feature.USE_TRANSIENT_ANNOTATION);
+        hibernateModule.configure(Hibernate5Module.Feature.FORCE_LAZY_LOADING, false);
+        objectMapper.registerModule(hibernateModule);
+
         objectMapper.registerModule(new JavaTimeModule());
         objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
         objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
+        objectMapper.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
 
         if (storageEnabled) {
             try {
